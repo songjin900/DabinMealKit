@@ -1,8 +1,10 @@
 import { useState, useRef } from "react";
 import PictureCard from "./pictureCard";
+import { Recipe } from "@prisma/client";
 
 
 interface PictureSlideProps {
+  recipes: Recipe[];
   width: number;
   height: number;
   align?: string;
@@ -11,52 +13,52 @@ interface PictureSlideProps {
 }
 
 
-export default function PictureSlide({
+export default function PictureSlide({ recipes,
   width,
   height,
   align = "items-center",
   justify = "justify-center",
   textalign = "text-left"
 }: PictureSlideProps) {
-  const slides = [
-    {
-      url: `https://imagedelivery.net/F5uyA07goHgKR71hGfm2Tg/63114483-efa1-4714-c65e-64688b717400/public`,
-      text: "text 1ddddddddddddddddddddccccccccccccccccccc",
-      subtext: "subtext 1dddddddddddddddddddddddddddddddddddddddddddddddddd",
-    },
-    {
-      url: `https://imagedelivery.net/F5uyA07goHgKR71hGfm2Tg/d1b994cc-e03b-442a-7e24-ae70a55ea400/public`,
-      text: "text 2",
-      subtext: "subtext 2",
-    },
-    {
-      url: `https://imagedelivery.net/F5uyA07goHgKR71hGfm2Tg/9d994287-7706-4b85-f5d0-e57e95ab5100/public`,
-      text: "text 3",
-      subtext: "subtext 3",
-    },
-    {
-      url: `https://imagedelivery.net/F5uyA07goHgKR71hGfm2Tg/9d994287-7706-4b85-f5d0-e57e95ab5100/public`,
-      text: "text 4",
-      subtext: "subtext 4",
-    },
-    {
-      url: `https://imagedelivery.net/F5uyA07goHgKR71hGfm2Tg/63114483-efa1-4714-c65e-64688b717400/public`,
-      text: "text 5ddddddddddddddddddddccccccccccccccccccc",
-      subtext: "subtext 5dddddddddddddddddddddddddddddddddddddddddddddddddd",
-    },
-    {
-      url: `https://imagedelivery.net/F5uyA07goHgKR71hGfm2Tg/d1b994cc-e03b-442a-7e24-ae70a55ea400/public`,
-      text: "text 6",
-      subtext: "subtext 6",
-    },
-    {
-      url: `https://imagedelivery.net/F5uyA07goHgKR71hGfm2Tg/9d994287-7706-4b85-f5d0-e57e95ab5100/public`,
-      text: "text 7",
-      subtext: "subtext 7",
-    }
-  ];
+  // const slides = [
+  //   {
+  //     url: `https://imagedelivery.net/F5uyA07goHgKR71hGfm2Tg/63114483-efa1-4714-c65e-64688b717400/public`,
+  //     text: "text 1ddddddddddddddddddddccccccccccccccccccc",
+  //     subtext: "subtext 1dddddddddddddddddddddddddddddddddddddddddddddddddd",
+  //   },
+  //   {
+  //     url: `https://imagedelivery.net/F5uyA07goHgKR71hGfm2Tg/d1b994cc-e03b-442a-7e24-ae70a55ea400/public`,
+  //     text: "text 2",
+  //     subtext: "subtext 2",
+  //   },
+  //   {
+  //     url: `https://imagedelivery.net/F5uyA07goHgKR71hGfm2Tg/9d994287-7706-4b85-f5d0-e57e95ab5100/public`,
+  //     text: "text 3",
+  //     subtext: "subtext 3",
+  //   },
+  //   {
+  //     url: `https://imagedelivery.net/F5uyA07goHgKR71hGfm2Tg/9d994287-7706-4b85-f5d0-e57e95ab5100/public`,
+  //     text: "text 4",
+  //     subtext: "subtext 4",
+  //   },
+  //   {
+  //     url: `https://imagedelivery.net/F5uyA07goHgKR71hGfm2Tg/63114483-efa1-4714-c65e-64688b717400/public`,
+  //     text: "text 5ddddddddddddddddddddccccccccccccccccccc",
+  //     subtext: "subtext 5dddddddddddddddddddddddddddddddddddddddddddddddddd",
+  //   },
+  //   {
+  //     url: `https://imagedelivery.net/F5uyA07goHgKR71hGfm2Tg/d1b994cc-e03b-442a-7e24-ae70a55ea400/public`,
+  //     text: "text 6",
+  //     subtext: "subtext 6",
+  //   },
+  //   {
+  //     url: `https://imagedelivery.net/F5uyA07goHgKR71hGfm2Tg/9d994287-7706-4b85-f5d0-e57e95ab5100/public`,
+  //     text: "text 7",
+  //     subtext: "subtext 7",
+  //   }
+  // ];
 
-  const [selectedImage, setSelectedImage] = useState(slides[0].url);
+  // const [selectedImage, setSelectedImage] = useState(slides[0].url);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [submitType, setSubmitType] = useState("update");
   const sliderRef = useRef<HTMLDivElement>();
@@ -102,15 +104,15 @@ export default function PictureSlide({
           </svg>
         </div>
         <div id="slider" ref={sliderRef} className="flex flex-row overflow-x-scroll scroll whitespace-nowrap scroll-smooth scrollbar-hide max-w-5xl w-5xl ">
-          {slides?.map((img) => (
+          {recipes?.map((r) => (
             <div
-              key={img.url}
-              onClick={() => setSelectedImage(img.url)}
+              key={r.id}
+              // onClick={() => setSelectedImage(img.url)}
             >
               <PictureCard
-                text={img.text}
-                subtext={img.subtext}
-                image={img.url + ""}
+                text={r.title}
+                subtext={r.subTitle ?? ""}
+                image={r.image + ""}
                 width={width}
                 height={height}
                 align="items-start"

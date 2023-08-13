@@ -7,8 +7,10 @@ import { useCallback, useEffect, useState } from "react";
 import ContentCard from "@components/contentCard";
 import PictureSlide from "@components/pictureSlide";
 import {colors} from "@components/palette";
+import client from "@libs/server/client";
 
-const OurStore: NextPage = () => {
+const MainPage: NextPage<{ recipes:any }> = ({ recipes }) => {
+    console.log(recipes);
     const router = useRouter()
     const [submitType, setSubmitType] = useState("update");
     const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -113,7 +115,7 @@ const OurStore: NextPage = () => {
                                 </p>
                             </div>
                             <div className="bg-white w-full">
-                                <PictureSlide width={280} height={400}/>
+                                <PictureSlide recipes ={recipes} width={280} height={400}/>
                             </div>
                         </div>
                     </div> 
@@ -144,4 +146,20 @@ const OurStore: NextPage = () => {
     );
 };
 
-export default OurStore;
+
+export const getServerSideProps = async () => {
+    const recipes = await client.recipe.findMany({
+        where: {
+            visibility: true
+        }
+    })
+
+    return {
+        props: {
+            recipes: JSON.parse(JSON.stringify(recipes)),
+        }
+    }
+}
+
+
+export default MainPage;

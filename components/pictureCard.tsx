@@ -27,7 +27,7 @@ export default function PictureCard({
         <div className="bg-white flex flex-col w-2xl h-2xl min-h-96 my-1 mx-1 px-1 relative">
             <div className="w-70 h-80 relative">
                 <Image
-                    src={`${image}`}
+                    src={`https://imagedelivery.net/F5uyA07goHgKR71hGfm2Tg/${image}/public`}
                     className="bg-black w-55 h-80 max-w-none max-h-none object-none"
                     width={width}
                     height={height}
