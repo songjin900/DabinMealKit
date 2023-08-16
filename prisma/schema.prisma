@@ -12,7 +12,7 @@ datasource db {
 }
 
 model Recipe {
-    id        Int      @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -20,6 +20,91 @@ model Recipe {
   subTitle String?
   image String
   visibility Boolean @default(true)
+}
+
+model Cuisine {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  displayName String
+  name String
+  index Int
+  visibility Boolean @default(true)
+
+   cusinePlan CuisinePlan[]
+}
+
+model CuisinePlan{
+    id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+
+    cuisine   Cuisine     @relation(fields: [cuisineId], references: [id])
+    cuisineId    Int   
+
+    plan   Plan     @relation(fields: [planId], references: [id])
+    planId    Int    
+     
+    @@index([cuisineId])
+    @@index([planId]) 
+}
+
+model Goal {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  displayName String
+  name String
+  index Int 
+  visibility Boolean @default(true)
+
+  goalPlan GoalPlan[]
+}
+
+model GoalPlan{
+    id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+    goal   Goal     @relation(fields: [goalId], references: [id])
+    goalId    Int   
+
+    plan   Plan     @relation(fields: [planId], references: [id])
+    planId    Int   
+
+    @@index([goalId])
+    @@index([planId])
+}
+
+model Plan{
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  numberOfPeople Int 
+  recipesPerWeek Int 
+  
+  cusinePlan CuisinePlan[]
+  goalPlan GoalPlan[]
+
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    String @default("active")
 }
 
 
