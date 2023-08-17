@@ -25,9 +25,16 @@ const OurPlan: NextPage<{ cuisine: Cuisine[], goal: Goal[] }> = ({ cuisine, goal
     const [selectedCuisine, setSelectedCuisine] = useState<number[]>([]);
     const [selectedGoal, setSelectedGoal] = useState<number[]>([]);
     const peopleNum = [2, 4];
-    const [selectedPeopleNum, setSelectedPeopleNum] = useState<number>(0);
+    const [selectedPeopleNum, setSelectedPeopleNum] = useState<number>(2);
     const cuisineNum = [3, 4, 5];
-    const [selectedCuisineNum, setSelectedCuisineNum] = useState<number>(0);
+    const [selectedCuisineNum, setSelectedCuisineNum] = useState<number>(4);
+
+    const plans = [
+        { id: 1, title: 'What kind of cuisine do you like?', subtitle: 'Tell us your preference below so we can better cater to your wants. You can always change them later' },
+        { id: 2, title: 'What are your goals with Slice Asia?', subtitle: 'Tell us your preference below so we can better cater to your wants. You can always change them later.' },
+        { id: 3, title: 'How people will be eating Slice Asia?', subtitle: 'Tell us your preference below so we can better cater to your wants. You can always change them later' },
+        { id: 4, title: 'How many cuisines do you want a week?', subtitle: 'Tell us your preference below so we can better cater to your wants. You can always change them later' },
+    ]
 
 
 
@@ -104,114 +111,81 @@ const OurPlan: NextPage<{ cuisine: Cuisine[], goal: Goal[] }> = ({ cuisine, goal
         <Layout hasTabBar title="Our Plan">
             {/* mobile & tablet view */}
             <div className={`bg-gray-100 w-full min-h-[40.625rem] items-center justify-center web:hidden`}>
-                <div className={`flex flex-col max-w-3xl items-center justify-center mx-auto bg-white mt-20 ${planStep === 1 ? "" : "hidden"}`}>
-                    <TitleFormat
-                        title="What kind of cuisine do you like?"
-                        subtitle="Tell us your preference below so we can better cater to your wants. You can always change them later"
-                    />
-                    <div className={`grid grid-cols-2 w-full mobile:px-2 tablet:px-3 web:px-4 text-lg gap-3 justify-center items-center`}>
-                        {
-                            cuisine
-                                .slice(0)
-                                .sort((a: any, b: any) => (a.index ?? 0) > (b.index ?? 0) ? 1 : -1)
-                                .map((c: any) => <button className={`bg-white border-2 h-[4rem] rounded-sm text-[#3A4884] 
-                            ${selectedCuisine.includes(c.id) ? "font-bold border-2 border-[#3A4884]" : ""}`}
-                                    key={c.id} onClick={() => cuisineClicked(c.id)}>{c.displayName}</button>)
-                        }
-                    </div>
-                    <div className="grid grid-cols-1 items-start px-4 tablet:grid-cols-2 web:grid-cols-4">
-                        <div className="tablet:col-span-2 tablet:px-[130px] web:col-span-4 mt-8 web:mt-10 mb-2 web:px-[225px]">
-                            <Link legacyBehavior href={`/our-plans`}>
-                                <div className="flex h-full space-x-3 items-center">
-                                    <button onClick={onPlanStepClicked} disabled={buttonDisabled} className={`w-full bg-[${colors.primary}]  hover:bg-[${colors.primaryHover}]  text-white px-4 border border-transparent rounded-sm shadow-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-[${colors.primary}]  focus:outline-none py-2 text-sm ${buttonDisabled ? `bg-gray-300 hover:bg-gray-300` : `bg-[${colors.primary}]`}`}>Continue</button>
-                                </div>
-                            </Link>
-                        </div>
-                    </div>
-                    <div className="mb-10 flex flex-row items-center justify-center">
-                        <p> you can <span className="font-bold"> skip a week or cancel</span> any time </p>
-                    </div>
-                </div>
-                <div className={`flex flex-col max-w-3xl items-center justify-center mx-auto bg-white mt-20 ${planStep === 2 ? "" : "hidden"}`}>
-                    <TitleFormat
-                        title="What are your goals with Slice Asia?"
-                        subtitle="Tell us your preference below so we can better cater to your wants. You can always change them later."
-                    />
-                    <div className={`flex flex-col w-full mobile:px-2 tablet:px-3 web:px-4 text-lg gap-3 justify-center items-center`}>
-                        {
-                            goal
-                                .slice(0)
-                                .sort((a: any, b: any) => (a.index ?? 0) > (b.index ?? 0) ? 1 : -1)
-                                .map((c: any) => <button className={`bg-white border-2 h-[4rem] rounded-sm text-[#3A4884] w-full
-                            ${selectedGoal.includes(c.id) ? "font-bold border-2 border-[#3A4884]" : ""}`}
-                                    key={c.id} onClick={() => goalClicked(c.id)}>{c.displayName}</button>)
-                        }
-                    </div>
-                    <div className="grid grid-cols-1 items-start px-4 tablet:grid-cols-2 web:grid-cols-4">
-                        <div className="tablet:col-span-2 tablet:px-[130px] web:col-span-4 mt-8 web:mt-10 mb-2 web:px-[225px]">
-                            <div className="flex h-full space-x-3 items-center">
-                                <button onClick={onPlanStepClicked} disabled={buttonDisabled} className={`w-full bg-[${colors.primary}]  hover:bg-[${colors.primaryHover}]  text-white px-4 border border-transparent rounded-sm shadow-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-[${colors.primary}]  focus:outline-none py-2 text-sm ${buttonDisabled ? `bg-gray-300 hover:bg-gray-300` : `bg-[${colors.primary}]`}`}>Continue</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="mb-10 flex flex-row items-center justify-center">
-                        <p> you can <span className="font-bold"> skip a week or cancel</span> any time </p>
-                    </div>
-                </div>
-                <div className={`flex flex-col max-w-3xl items-center justify-center mx-auto bg-white mt-20 ${planStep === 3 ? "" : "hidden"}`}>
-                    <TitleFormat
-                        title="How people will be eating Slice Asia?"
-                        subtitle=""
-                    />
-                    <div className={`flex flex-col w-full text-lg justify-center items-center px-2`}>
-                        {
-                            peopleNum
-                                .map((p) => <button className={`bg-white border-2 h-[4rem] w-64 rounded-sm text-[#3A4884] 
-                            ${selectedPeopleNum === p ? "font-bold border-2 border-[#3A4884]" : ""}`}
-                                    key={p} onClick={() => peopleNumClicked(p)}>{p}</button>)
-                        }
-                        {
-                            selectedPeopleNum && selectedPeopleNum === 2 ? <div>This is great for an individual or a pair preparing their meals.</div> : selectedPeopleNum && selectedPeopleNum === 4 ? <div>This is great to for families or friends!</div> : null
-                        }
-                    </div>
-                    <div className="grid grid-cols-1 items-start px-4 tablet:grid-cols-2 web:grid-cols-4">
-                        <div className="tablet:col-span-2 tablet:px-[130px] web:col-span-4 mt-8 web:mt-10 mb-2 web:px-[225px]">
-                            <div className="flex h-full space-x-3 items-center">
-                                <button onClick={onPlanStepClicked} disabled={buttonDisabled} className={`w-full bg-[${colors.primary}]  hover:bg-[${colors.primaryHover}]  text-white px-4 border border-transparent rounded-sm shadow-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-[${colors.primary}]  focus:outline-none py-2 text-sm ${buttonDisabled ? `bg-gray-300 hover:bg-gray-300` : `bg-[${colors.primary}]`}`}>Continue</button>
-                            </div>
-                        </div>
-                    </div>
+                <div className={`flex flex-col max-w-3xl items-center justify-center mx-auto mt-20 bg-white`}>
 
-
-                    <div className="mb-10 flex flex-row items-center justify-center">
-                        <p> you can <span className="font-bold"> skip a week or cancel</span> any time </p>
-                    </div>
-                </div>
-                <div className={`flex flex-col max-w-3xl items-center justify-center mx-auto bg-white mt-20 ${planStep === 4 ? "" : "hidden"}`}>
                     <TitleFormat
-                        title="How many cuisines do you want a week?"
-                        subtitle=""
+                        title={plans.find((x) => x.id === planStep)?.title ?? ""}
+                        subtitle={plans.find((x) => x.id === planStep)?.subtitle ?? ""}
                     />
-                    <div className={`flex flex-row w-full text-lg gap-3 justify-center items-center px-2`}>
-                        {/* <ChoiceButton onClick={handleFoodButtonlicked} choices={["3", "4", "5"]} choiceTexts={["Our most popular plan", "Ready for next week plan", "A new dinner every night plan"]} /> */}
+
+                    <div className={`${planStep === 1 ?
+                        "grid grid-cols-2" : planStep === 2 ?
+                            "grid grid-cols-1" : planStep === 3 ?
+                                "flex flex-col items-center justify-center gap-0" :
+                                "grid grid-cols-3"} 
+                                w-full px-2 tablet:px-3 text-lg gap-3 justify-center items-center}`}>
                         {
-                            cuisineNum
-                                .map((p) => <button className={`bg-white border-2 h-[4rem] w-64 rounded-sm text-[#3A4884] 
-                            ${selectedCuisineNum === p ? "font-bold border-2 border-[#3A4884]" : ""}`}
-                                    key={p} onClick={() => cuisineNumClicked(p)}>{p}</button>)
+                            planStep === 1 ?
+                                <>
+                                    {
+                                        cuisine
+                                            .slice(0)
+                                            .sort((a: any, b: any) => (a.index ?? 0) > (b.index ?? 0) ? 1 : -1)
+                                            .map((c: any) =>
+                                                <button className={`bg-white border-2 h-[4rem] rounded-sm text-[#3A4884] 
+                                                ${selectedCuisine.includes(c.id) ? "font-bold border-2 border-[#3A4884]" : ""}`}
+                                                    key={c.id} onClick={() => cuisineClicked(c.id)}>{c.displayName}</button>)
+                                    }
+                                </> :
+                                planStep === 2 ?
+                                    <>
+                                        {
+                                            goal
+                                                .slice(0)
+                                                .sort((a: any, b: any) => (a.index ?? 0) > (b.index ?? 0) ? 1 : -1)
+                                                .map((c: any) => <button className={`bg-white border-2 h-[4rem] rounded-sm text-[#3A4884] w-full
+                                                ${selectedGoal.includes(c.id) ? "font-bold border-2 border-[#3A4884]" : ""}`}
+                                                    key={c.id} onClick={() => goalClicked(c.id)}>{c.displayName}</button>)
+                                        }
+
+                                    </> :
+                                    planStep === 3 ?
+                                        <>
+                                            {
+                                                peopleNum
+                                                    .map((p) => <button className={`bg-white border-2 h-[4rem] w-64 rounded-sm text-[#3A4884] 
+                                                     ${selectedPeopleNum === p ? "font-bold border-2 border-[#3A4884]" : ""}`}
+                                                        key={p} onClick={() => peopleNumClicked(p)}>{p}</button>)
+                                            }
+                                            {
+                                                selectedPeopleNum && selectedPeopleNum === 2 ?
+                                                    <div>This is great for an individual or a pair preparing their meals.</div> :
+                                                    selectedPeopleNum && selectedPeopleNum === 4 ?
+                                                        <div>This is great to for families or friends!</div> :
+                                                        null
+                                            }
+
+                                        </> :
+                                        planStep === 4 ?
+                                            <>
+                                                {
+                                                    cuisineNum
+                                                        .map((p) => <button className={`bg-white border-2 h-[4rem] rounded-sm text-[#3A4884]
+                                                    ${selectedCuisineNum === p ? "font-bold border-2 border-[#3A4884]" : ""}`}
+                                                            key={p} onClick={() => cuisineNumClicked(p)}>{p}</button>)
+                                                }
+                                            </> :
+                                            null
                         }
-                        {/* {
-                            selectedCuisineNum && selectedCuisineNum === 2 ? <div>This is great for an individual or a pair preparing their meals.</div> : selectedPeopleNum && selectedPeopleNum === 4 ? <div>This is great to for families or friends!</div> : null
-                        } */}
                     </div>
-                    <div className="grid grid-cols-1 items-start px-4 tablet:grid-cols-2 web:grid-cols-4">
-                        <div className="tablet:col-span-2 tablet:px-[130px] web:col-span-4 mt-8 web:mt-10 mb-2 web:px-[225px]">
-                            <div className="flex h-full space-x-3 items-center">
-                                <button onClick={onSelectPlanClicked} disabled={buttonDisabled} className={`w-full bg-[${colors.primary}]  hover:bg-[${colors.primaryHover}]  text-white px-4 border border-transparent rounded-sm shadow-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-[${colors.primary}]  focus:outline-none py-2 text-sm ${buttonDisabled ? `bg-gray-300 hover:bg-gray-300` : `bg-[${colors.primary}]`}`}>Continue</button>
-                            </div>
-                        </div>
+                    <div className="flex  justify-center mt-10">
+                        <button onClick={() => onPlanStepClicked()}
+                            className={`w-full bg-[${colors.primary}]  hover:bg-[${colors.primaryHover}]
+                                    text-white px-4 border border-transparent rounded-sm shadow-sm font-medium focus:ring-2 
+                                    focus:ring-offset-2 focus:ring-[${colors.primary}]  focus:outline-none py-2 text-sm 
+                                    ${buttonDisabled ? `bg-gray-300 hover:bg-gray-300` : `bg-[${colors.primary}]`}`}>Continue</button>
                     </div>
-                    <div className="mb-10 flex flex-row items-center justify-center">
+                    <div className="my-10 flex  items-center justify-center">
                         <p> you can <span className="font-bold"> skip a week or cancel</span> any time </p>
                     </div>
                 </div>
